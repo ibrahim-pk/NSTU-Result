@@ -24,8 +24,8 @@ const Header = () => {
       <h1 className="font-semibold text-black">Welcome</h1>
       <div className="flex items-center space-x-3">
         <Avatar
-          src={user.result.avatar}
-          alt={user.result.name.charAt(0)}
+          src={user?.result?.avatar}
+          alt={user?.result?.name?.charAt(0)}
           sx={{ width: 24, height: 24 }}
           className="border-blue-600 border-2"
         />
