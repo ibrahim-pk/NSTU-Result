@@ -91,6 +91,27 @@ const Sidebar = () => {
             <h1 className="font-normal">Delete Admin</h1>
           </NavLink>
         </div>
+       
+        <div className="">
+          <NavLink
+            to="/admin/add/ufaculty"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <AddIcon className="" />
+            <h1 className="font-normal">Add Faculty</h1>
+          </NavLink>
+          <NavLink
+            to="/admin/delete/ufaculty"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <DeleteIcon className="" />
+            <h1 className="font-normal">Delete Faculty</h1>
+          </NavLink>
+        </div>
+
+
         <div className="">
           <NavLink
             to="/admin/adddepartment"
@@ -116,7 +137,7 @@ const Sidebar = () => {
               isActive ? isActiveStyle : isNotActiveStyle
             }>
             <EngineeringIcon className="" />
-            <h1 className="font-normal">Our Faculty</h1>
+            <h1 className="font-normal">Teachers</h1>
           </NavLink>
 
           <NavLink
@@ -125,7 +146,7 @@ const Sidebar = () => {
               isActive ? isActiveStyle : isNotActiveStyle
             }>
             <AddIcon className="" />
-            <h1 className="font-normal">Add Faculty</h1>
+            <h1 className="font-normal">Add Teacher</h1>
           </NavLink>
           <NavLink
             to="/admin/deletefaculty"
@@ -133,7 +154,7 @@ const Sidebar = () => {
               isActive ? isActiveStyle : isNotActiveStyle
             }>
             <DeleteIcon className="" />
-            <h1 className="font-normal">Delete Faculty</h1>
+            <h1 className="font-normal">Delete Teacher</h1>
           </NavLink>
         </div>
         <div className="">

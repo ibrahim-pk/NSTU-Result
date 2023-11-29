@@ -59,6 +59,13 @@ export const getAdmin = (admin) => API.post("/api/admin/getadmin", admin);
 export const addDepartment = (department) =>
   API.post("/api/admin/adddepartment", department);
 
+  export const addUfaculty= (faculty) =>
+  API.post("/api/admin/add/ufaculty", faculty);
+
+  export const deleteUfaculty= (faculty) =>
+  API.post("/api/admin/delete/ufaculty", faculty);
+
+
 export const addFaculty = (faculty) =>
   API.post("/api/admin/addfaculty", faculty);
 

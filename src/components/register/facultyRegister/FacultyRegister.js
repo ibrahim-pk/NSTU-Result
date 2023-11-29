@@ -6,6 +6,8 @@ import Spinner from "../../../utils/Spinner";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { addFaculty } from "../../../redux/api";
 
 const schema = yup
   .object({
@@ -40,7 +42,7 @@ const FacultyRegister = () => {
   const [loading, setLoading] = useState(false);
   const [translate, setTranslate] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const dispatch=useDispatch()
   const {
     control,
     handleSubmit,
@@ -59,21 +61,21 @@ const FacultyRegister = () => {
   const onSubmit = (data) => {
     setLoading(true);
     console.log(data);
-    // dispatch(
-    //   addFaculty({
-    //     dob,
-    //     name,
-    //     email,
-    //     gender,
-    //     avatar,
-    //     username,
-    //     password,
-    //     department,
-    //     designation,
-    //     contactNumber,
-    //     joiningYear: new Date(joiningYear).getFullYear(),
-    //   })
-    // );
+    dispatch(
+      addFaculty({
+        dob:defaultValues.dob,
+        name:defaultValues.name,
+        email:defaultValues.email,
+        gender:defaultValues.email,
+        avatar:defaultValues.avatar,
+        username:defaultValues.username,
+        password:defaultValues.password,
+        department:defaultValues.department,
+        designation:defaultValues.department,
+        contactNumber:defaultValues.avatar,
+        joiningYear: new Date(defaultValues.joiningYear).getFullYear(),
+      })
+    );
   };
 
   return (

@@ -24,6 +24,9 @@ import {
   DELETE_SUBJECT,
   CREATE_NOTICE,
   GET_NOTICE,
+  ADD_UFACULTY,
+  DELETE_UFACULTY,
+  GET_ALL_UFACULTY,
 } from "../actionTypes";
 
 const initialState = {
@@ -32,6 +35,7 @@ const initialState = {
   updatedAdmin: false,
   adminAdded: false,
   departmentAdded: false,
+  ufacultyAdded: false,
   facultyAdded: false,
   studentAdded: false,
   subjectAdded: false,
@@ -40,6 +44,7 @@ const initialState = {
   allStudent: [],
   allAdmin: [],
   allDepartment: [],
+  allUfaculty: [],
   students: [],
   faculties: [],
   subjects: [],
@@ -47,6 +52,7 @@ const initialState = {
   notices: [],
   adminDeleted: false,
   departmentDeleted: false,
+  ufacultyDeleted: false,
   facultyDeleted: false,
   studentDeleted: false,
   subjectDeleted: false,
@@ -112,6 +118,18 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         departmentAdded: action.payload,
       };
+      case ADD_UFACULTY:
+      return {
+        ...state,
+        ufacultyAdded: action.payload,
+      };
+
+      case DELETE_UFACULTY:
+      return {
+        ...state,
+        ufacultyDeleted: action.payload,
+      };
+      
     case ADD_FACULTY:
       return {
         ...state,
@@ -146,6 +164,11 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         allDepartment: action.payload,
+      };
+      case GET_ALL_UFACULTY:
+      return {
+        ...state,
+        allUfaculty: action.payload,
       };
     case ADD_SUBJECT:
       return {

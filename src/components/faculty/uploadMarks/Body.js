@@ -5,8 +5,9 @@ import { getStudent, uploadMark } from "../../../redux/actions/facultyActions";
 import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
-import { MARKS_UPLOADED, SET_ERRORS } from "../../../redux/actionTypes";
+import { DELETE_DEPARTMENT, MARKS_UPLOADED, SET_ERRORS } from "../../../redux/actionTypes";
 import { getTest } from "../../../redux/actions/facultyActions";
+import { getAllDepartment } from "../../../redux/actions/adminActions";
 const Body = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user"));
@@ -17,11 +18,18 @@ const Body = () => {
   const tests = store.faculty.tests.result;
   const [marks, setMarks] = useState([]);
 
+ 
+
+  const departments = useSelector((state) => state.admin.allDepartment);
+  //console.log(departments);
+
   const [value, setValue] = useState({
     department: "",
     year: "",
     section: "",
     test: "",
+    batch:"",
+    courseCode:""
   });
   const [search, setSearch] = useState(false);
 
@@ -29,9 +37,18 @@ const Body = () => {
     if (Object.keys(store.errors).length !== 0) {
       setError(store.errors);
       setLoading(false);
-      setValue({ department: "", year: "", section: "", test: "" });
+      setValue({ department: "", year: "", section: "", test: "",batch:'' });
     }
   }, [store.errors]);
+
+  useEffect(() => {
+    if (store.admin) {
+      setLoading(false);
+      setValue("");
+      dispatch(getAllDepartment());
+     
+    }
+  }, []);
 
   const handleInputChange = (value, _id) => {
     const newMarks = [...marks];
@@ -46,12 +63,15 @@ const Body = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //console.log(value);
     setSearch(true);
     setLoading(true);
     setError({});
     dispatch(getStudent(value));
   };
   const students = useSelector((state) => state.admin.students.result);
+  const allSubject = useSelector((state) => state.admin.students.subject);
+  //console.log(allSubject);
 
   const uploadMarks = (e) => {
     setError({});
@@ -83,6 +103,9 @@ const Body = () => {
     }
   }, [store.errors, store.faculty.marksUploaded]);
 
+
+
+
   useEffect(() => {
     if (value.year !== "" && value.section !== "") {
       dispatch(getTest(value));
@@ -100,6 +123,36 @@ const Body = () => {
           <form
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}>
+              <label htmlFor="department">Department</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.department}
+              onChange={(e) => setValue({ ...value, department: e.target.value })}>
+              <MenuItem value="">None</MenuItem>
+              {departments?.map((dp, idx) => (
+                <MenuItem key={idx} value={dp.department}>
+                  {dp.department}
+                </MenuItem>
+              ))}
+            </Select>
+            <label htmlFor="batch">Batch</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.batch}
+              onChange={(e) => setValue({ ...value, batch: e.target.value })}>
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="14">14</MenuItem>
+              <MenuItem value="15">15</MenuItem>
+              <MenuItem value="16">16</MenuItem>
+              <MenuItem value="17">17</MenuItem>
+              <MenuItem value="18">18</MenuItem>
+            </Select>
             <label htmlFor="year">Year</label>
             <Select
               required
@@ -114,7 +167,7 @@ const Body = () => {
               <MenuItem value="3">3</MenuItem>
               <MenuItem value="4">4</MenuItem>
             </Select>
-            <label htmlFor="section">Section</label>
+            <label htmlFor="section">Term</label>
             <Select
               required
               displayEmpty
@@ -125,23 +178,29 @@ const Body = () => {
               <MenuItem value="">None</MenuItem>
               <MenuItem value="1">1</MenuItem>
               <MenuItem value="2">2</MenuItem>
-              <MenuItem value="3">3</MenuItem>
             </Select>
-            <label htmlFor="year">Test</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.test}
-              onChange={(e) => setValue({ ...value, test: e.target.value })}>
-              <MenuItem value="">None</MenuItem>
-              {tests?.map((test, idx) => (
-                <MenuItem value={test.test} key={idx}>
-                  {test.test}
-                </MenuItem>
-              ))}
-            </Select>
+            {
+              allSubject.length>0&&
+              <div>
+              <label htmlFor="department">Course</label>
+              <Select
+                required
+                displayEmpty
+                sx={{ height: 36, width: 224 }}
+                inputProps={{ "aria-label": "Without label" }}
+                value={value.courseCode}
+                onChange={(e) => setValue({ ...value, courseCode: e.target.value })}>
+                <MenuItem value="">None</MenuItem>
+                {allSubject?.map((dp, idx) => (
+                  <MenuItem key={idx} value={dp.subjectCode
+                  }>
+                    {dp.subjectCode
+  }
+                  </MenuItem>
+                ))}
+              </Select>
+              </div>
+            }
             <button
               className={`${classes.adminFormSubmitButton} w-56`}
               type="submit">
@@ -178,14 +237,14 @@ const Body = () => {
                       Name
                     </h1>
                     <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Username
+                     ID
                     </h1>
 
                     <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Section
+                      S-Mark
                     </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Marks
+                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
+                     CT+Att
                     </h1>
                   </div>
                   {students?.map((stu, idx) => (
@@ -202,13 +261,9 @@ const Body = () => {
                       </h1>
                       <h1
                         className={`col-span-2 ${classes.adminDataBodyFields}`}>
-                        {stu.username}
+                        {stu.stuId}
                       </h1>
-
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}>
-                        {stu.section}
-                      </h1>
+                      <div  className={`col-span-1 ${classes.adminDataBodyFields}`}>
                       <input
                         onChange={(e) =>
                           handleInputChange(e.target.value, stu._id)
@@ -217,17 +272,32 @@ const Body = () => {
                         className="col-span-2 border-2 w-24 px-2 h-8"
                         type="text"
                       />
+                      </div>
+                      <div  className={`col-span-1 ${classes.adminDataBodyFields}`}>
+                      <input
+                        onChange={(e) =>
+                          handleInputChange(e.target.value, stu._id)
+                        }
+                        value={stu.marks}
+                        className="col-span-2 border-2 w-24 px-2 h-8"
+                        type="text"
+                      />
+                      </div>
+                     
                     </div>
                   ))}
                 </div>
               )}
             {search && Object.keys(error).length === 0 && (
               <div className="">
-                <button
+                {
+                  allSubject.length>0&&
+                  <button
                   onClick={uploadMarks}
                   className={`${classes.adminFormSubmitButton} bg-blue-500 mt-5 ml-[22rem]`}>
                   Upload
                 </button>
+                }
               </div>
             )}
             {(error.examError || error.backendError) && (

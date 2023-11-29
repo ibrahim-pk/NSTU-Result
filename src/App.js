@@ -47,6 +47,8 @@ import DeleteStudent from "./components/admin/deleteStudent/DeleteStudent";
 import DeleteSubject from "./components/admin/deleteSubject/DeleteSubject";
 import CreateNotice from "./components/admin/createNotice/CreateNotice";
 import SuperAdmin from "./components/SuperAdmin/SuperAdmin";
+import AddUfaculty from "./components/admin/addUfaculty/AddUfaculty";
+import DeleteUfaculty from "./components/admin/deleteUfaculty/DeleteUfaculty";
 
 const App = () => {
   return (
@@ -69,6 +71,12 @@ const App = () => {
       <Route path="/admin/createnotice" element={<CreateNotice />} />
       <Route path="/admin/addadmin" element={<AddAdmin />} />
       <Route path="/admin/deleteadmin" element={<DeleteAdmin />} />
+      
+      <Route path="/admin/add/ufaculty" element={<AddUfaculty />} />
+      <Route path="/admin/delete/ufaculty" element={<DeleteUfaculty />} />
+
+
+
       <Route path="/admin/adddepartment" element={<AddDepartment />} />
       <Route path="/admin/deletedepartment" element={<DeleteDepartment />} />
       <Route path="/admin/addfaculty" element={<AddFaculty />} />

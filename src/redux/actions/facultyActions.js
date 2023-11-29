@@ -66,6 +66,7 @@ export const getTest = (formData) => async (dispatch) => {
 export const getStudent = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getMarksStudent(formData);
+    console.log(data);
     dispatch({ type: GET_STUDENT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
