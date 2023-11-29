@@ -22,7 +22,7 @@ const Body = () => {
     e.preventDefault();
     setError({});
     setLoading(true);
-    const {data} =await axios.post('http://localhost:5000/api/admin/add/ufaculty',{ufaculty})
+    const {data} =await axios.post('https://nstu-result-server-g51ilrof1-ibrahimecste.vercel.app/api/admin/add/ufaculty',{ufaculty})
     if(data.success){
       toast.success(data?.msg)
     }else{

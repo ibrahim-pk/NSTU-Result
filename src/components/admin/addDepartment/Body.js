@@ -22,7 +22,7 @@ const Body = () => {
     }
     const fetchData=async()=>{
       setLoading(true);
-      const {data} =await axios.get('http://localhost:5000/api/admin/get/ufaculty')
+      const {data} =await axios.get('https://nstu-result-server-g51ilrof1-ibrahimecste.vercel.app/api/admin/get/ufaculty')
       setUfaculty(data?.faculty)
      }
      fetchData()
