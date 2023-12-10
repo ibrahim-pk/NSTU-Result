@@ -1,4 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'react-toastify/dist/ReactToastify.css'
+@import 'react-toastify/dist/ReactToastify.css';
+
+
+.btn-admin {
+    @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700;
+  }
+  
+  .btn-teacher {
+    @apply bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700;
+  }
+  
+  .btn-student {
+    @apply bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700;
+  }

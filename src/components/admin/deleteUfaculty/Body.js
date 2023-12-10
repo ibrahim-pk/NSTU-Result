@@ -29,7 +29,7 @@ const Body = () => {
     }
    const fetchData=async()=>{
     setLoading(true);
-    const {data} =await axios.get('https://nstu-result-server-g51ilrof1-ibrahimecste.vercel.app/api/admin/get/ufaculty')
+    const {data} =await axios.get('http://localhost:5000/api/admin/get/ufaculty')
     setUfaculty(data?.faculty)
    }
    fetchData()
@@ -40,7 +40,7 @@ const Body = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
     setLoading(true);
-    const {data} =await axios.post('https://nstu-result-server-g51ilrof1-ibrahimecste.vercel.app/api/admin/delete/ufaculty',{ufaculty:ufacultyItem})
+    const {data} =await axios.post('http://localhost:5000/api/admin/delete/ufaculty',{ufaculty:ufacultyItem})
     if(data.success){
       toast.success(data?.msg)
     }else{

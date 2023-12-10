@@ -24,7 +24,7 @@ const Body = () => {
   });
 
   useEffect(() => {
-    if (Object.keys(store.errors).length !== 0) {
+    if (Object.keys(store.errors)?.length !== 0) {
       setError(store.errors);
       setValue({
         subjectCode: "",
