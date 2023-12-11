@@ -92,12 +92,12 @@ const Body = () => {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(value);
-    setFormData({ ...formData, department:value.department,year:value.year,term:value.section})
+    console.log(e.target.value);
+    setFormData({ ...formData, department:value.department,year:value.year,term:value.section,code:e.target.value})
     setSearch(true);
     setLoading(true);
     setError({});
-    dispatch(getStudent(value));
+   // dispatch(getStudent(value));
     const {data}=await axios.post("http://localhost:5000/api/faculty/getstudent",value)
     console.log(data);
     seTstudents(data?.result)
@@ -108,7 +108,7 @@ const Body = () => {
 
  const handleCode=(e)=>{
   setValue({ ...value, courseCode: e.target.value })
-  setFormData({ ...formData, code: e.target.value })
+  // setFormData({ ...formData, code: e.target.value })
   handleSubmit(e)
  }
 
@@ -119,7 +119,7 @@ const Body = () => {
   const uploadMarks = (e) => {
    console.log(formData);
     setError({});
-    dispatch(uploadMark(formData));
+     dispatch(uploadMark(formData));
   };
 
   useEffect(() => {
@@ -294,7 +294,10 @@ const Body = () => {
                       ID
                     </h1>
 
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
+                    <h1 style={{
+                      marginLeft:"20px"
+                    }
+                    } className={`col-span-1 ${classes.adminDataHeading}`}>
                       1st Examiner
                     </h1>
                     <h1 className={`col-span-1 ${classes.adminDataHeading}`}>

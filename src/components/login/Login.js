@@ -16,19 +16,25 @@ const Login = () => {
           University Result Management System
         </h1>
 
-        <div className="flex  justify-center">
+        <div className="flex justify-center">
       <div className="bg-white p-8 rounded shadow-lg text-center">
         <h1 className="text-3xl font-bold mb-4">Welcome to our platform</h1>
-        <div className=" space-y-4">
+        <div className="flex justify-center my-2 py-2">
+          <div>
           <Link to="/login/adminlogin" className="btn-admin mx-2">
             Admin
           </Link>
+          </div>
+          <div>
           <Link to="/login/facultylogin" className="btn-teacher mx-2">
             Teacher
           </Link>
+          </div>
+          <div>
           <Link to="/login/studentlogin" className="btn-student mx-2">
             Student
           </Link>
+          </div>
         </div>
       </div>
     </div>

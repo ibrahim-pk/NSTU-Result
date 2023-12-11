@@ -76,8 +76,8 @@ export const getStudent = (formData) => async (dispatch) => {
 export const uploadMark =(formData) => async (dispatch) => {
     try {
       
-      await api.uploadMarks(formData);
-      alert("Marks Uploaded Successfully");
+     const {data}= await api.uploadMarks(formData);
+      console.log(data);
       dispatch({ type: MARKS_UPLOADED, payload: true });
     } catch (error) {
       dispatch({ type: SET_ERRORS, payload: error.response.data });
