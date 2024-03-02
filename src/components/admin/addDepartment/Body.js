@@ -81,7 +81,7 @@ const Body = () => {
             <div style={{
               marginLeft:'40px'
             }}>
-            <span className={classes.adminLabel}>Department :</span>
+            <span className={classes.adminLabel}>Faculty: </span>
            
             <Select
               required

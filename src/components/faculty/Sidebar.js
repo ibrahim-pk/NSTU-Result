@@ -53,13 +53,15 @@ const Sidebar = () => {
         </div>
         <div className="">
           <NavLink
-            to="/faculty/createtest"
+            to="/faculty/visit/currculumn"
             className={({ isActive }) =>
               isActive ? isActiveStyle : isNotActiveStyle
             }>
             <AddIcon className="" />
-            <h1 className="font-normal">Create Test</h1>
+            <h1 className="font-normal">Curriculum</h1>
           </NavLink>
+        </div>
+        <div className="">
           <NavLink
             to="/faculty/uploadmarks"
             className={({ isActive }) =>
@@ -80,7 +82,7 @@ const Sidebar = () => {
             <h1 className="font-normal">Result</h1>
           </NavLink>
         </div> */}
-        <div className="">
+        {/* <div className="">
           <NavLink
             to="/faculty/result"
             className={({ isActive }) =>
@@ -89,7 +91,7 @@ const Sidebar = () => {
             <EngineeringIcon className="" />
             <h1 className="font-normal">Result</h1>
           </NavLink>
-        </div>
+        </div> */}
       </div>
     </div>
   );

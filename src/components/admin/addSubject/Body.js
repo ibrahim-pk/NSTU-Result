@@ -22,6 +22,7 @@ const Body = () => {
     term: "",
     totalLectures: "",
     department: "",
+    degree:""
   });
 
   useEffect(() => {
@@ -36,6 +37,7 @@ const Body = () => {
         term: "",
         totalLectures: "",
         department: "",
+        degree:''
       });
     }
   }, [store.errors]);
@@ -60,6 +62,7 @@ const Body = () => {
           term: "",
           totalLectures: "",
           department: "",
+          degree:''
         });
 
         dispatch({ type: SET_ERRORS, payload: {} });
@@ -177,6 +180,24 @@ const Body = () => {
                         {dp.department}
                       </MenuItem>
                     ))}
+                  </Select>
+                </div>
+                <div className={classes.adminForm3}>
+                  <h1 className={classes.adminLabel}>Degree :</h1>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.degree}
+                    onChange={(e) =>
+                      setValue({ ...value, degree: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="Bsc">Bsc</MenuItem>
+                    <MenuItem value="Msc">Msc</MenuItem>
+                    
                   </Select>
                 </div>
                 <div className={classes.adminForm3}>

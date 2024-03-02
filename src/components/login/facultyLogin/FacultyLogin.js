@@ -79,7 +79,7 @@ const FacultyLogin = () => {
         >
           <h1 className="text-white text-3xl font-semibold">Faculty</h1>
           <div className="space-y-1">
-            <p className="text-[#515966] font-bold text-sm">Username</p>
+            <p className="text-[#515966] font-bold text-sm">Email</p>
             <div
               className={`bg-[#515966] rounded-lg w-[14rem] flex  items-center ${
                 errors.username ? "border border-red-500" : ""

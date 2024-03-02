@@ -20,6 +20,7 @@ const Body = () => {
   const [ufaculty,setUfaculty ]=useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [reLoading, setReLoading] = useState(true);
   const store = useSelector((state) => state);
 
   useEffect(() => {
@@ -49,6 +50,10 @@ const Body = () => {
    console.log(data);
     setUfaculty("");
     setLoading(false);
+    setReLoading(!reLoading)
+    setInterval(()=>{
+      window.location.href="/admin/delete/ufaculty"
+   },2000)
   };
 
 
@@ -70,7 +75,7 @@ const Body = () => {
       dispatch(getAllDepartment());
       dispatch({ type: DELETE_DEPARTMENT, payload: false });
     }
-  }, [store.admin.departmentDeleted]);
+  }, [reLoading,store.admin.departmentDeleted]);
   
   useEffect(() => {
     if (faculties?.length !== 0) {
@@ -87,7 +92,7 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <EngineeringIcon />
-          <h1>All Faculty</h1>
+          <h1>Delete Faculty</h1>
         </div>
         <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
           <form
@@ -114,7 +119,7 @@ const Body = () => {
               Delete
             </button>
           </form>
-          <div className="col-span-3 mr-6">
+          {/* <div className="col-span-3 mr-6">
             <div className={classes.loadingAndError}>
               {loading && (
                 <Spinner
@@ -131,7 +136,7 @@ const Body = () => {
                 </p>
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       <ToastContainer />

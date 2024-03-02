@@ -31,6 +31,9 @@ const Body = () => {
    console.log(data);
     setUfaculty("");
     setLoading(false);
+    setInterval(()=>{
+       window.location.href="/admin/add/ufaculty"
+    },2000)
   };
 
 

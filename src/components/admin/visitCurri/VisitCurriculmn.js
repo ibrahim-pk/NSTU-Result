@@ -7,7 +7,7 @@ import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import { DELETE_SUBJECT, SET_ERRORS } from "../../../redux/actionTypes";
 
-const Body = () => {
+const CurriculmnBody = () => {
   const dispatch = useDispatch();
   const departments = useSelector((state) => state.admin.allDepartment);
   const [error, setError] = useState({});
@@ -19,27 +19,17 @@ const Body = () => {
     department: "",
     year: "",
     term: "",
+    degree:""
   });
   const [search, setSearch] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(store.errors).length !== 0) {
+    if (Object.keys(store.errors)?.length !== 0) {
       setError(store.errors);
       setLoading(false);
     }
   }, [store.errors]);
 
-  const handleInputChange = (e) => {
-    const tempCheck = checkedValue;
-    let index;
-    if (e.target.checked) {
-      tempCheck.push(e.target.value);
-    } else {
-      index = tempCheck.indexOf(e.target.value);
-      tempCheck.splice(index, 1);
-    }
-    setCheckedValue(tempCheck);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -49,16 +39,10 @@ const Body = () => {
     dispatch(getSubject(value));
   };
   const subjects = useSelector((state) => state.admin.subjects.result);
-
-  const dltSubject = (e) => {
-    setError({});
-    setLoading(true);
-    dispatch(deleteSubject(checkedValue));
-  };
-
+ console.log(subjects?.length);
   useEffect(() => {
     if (store.admin.subjectDeleted) {
-      setValue({ department: "", year: "", term: "" });
+      setValue({ department: "", year: "", term: "" ,degree:''});
       setSearch(false);
       setLoading(false);
       dispatch({ type: DELETE_SUBJECT, payload: false });
@@ -66,7 +50,8 @@ const Body = () => {
   }, [store.admin.subjectDeleted]);
 
   useEffect(() => {
-    if (subjects?.length !== 0) setLoading(false);
+    if (subjects?.length !== 0 || subjects?.length === 0)
+     setLoading(false);
   }, [subjects]);
 
   useEffect(() => {
@@ -78,13 +63,33 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <DeleteIcon />
-          <h1>Delete Faculty</h1>
+          <h1>Curriculum</h1>
         </div>
         <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
           <form
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}
           >
+         
+         <label htmlFor="degree">Degree</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.degree}
+              onChange={(e) =>
+                setValue({ ...value, degree: e.target.value })
+              }
+            >
+              <MenuItem  value="">None</MenuItem>
+              <MenuItem value="Bsc">Bsc</MenuItem>
+              <MenuItem value="Msc">Msc</MenuItem>
+              
+            </Select>
+
+
+
             <label htmlFor="department">Department</label>
             <Select
               required
@@ -159,8 +164,7 @@ const Body = () => {
             </div>
             {search &&
               !loading &&
-              Object.keys(error).length === 0 &&
-              subjects?.length !== 0 && (
+              Object.keys(error)?.length === 0 &&(
                 // <div className={`${classes.adminData} h-[20rem]`}>
                 //   <div className="grid grid-cols-8">
                 //     <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
@@ -216,12 +220,11 @@ const Body = () => {
                 //   ))}
                 // </div>
 
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto overflow-y-auto h-96">
                   <table className="table">
                     {/* head */}
                     <thead>
                       <tr>
-                        <th>Select</th>
                         <th>Sr no</th>
                         <th>Subject Code</th>
                         <th>Subject Name</th>
@@ -229,37 +232,22 @@ const Body = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {subjects?.map((adm, idx) => (
-                        <tr key={idx}>
-                          <td>
-                          <input
-                        onChange={handleInputChange}
-                        value={adm._id}
-                        className="col-span-1 border-2 w-16 h-4 mt-3 px-2 "
-                        type="checkbox"
-                      />
-                          </td>
-                          <td>{idx + 1}</td>
-                          <td>{adm.subjectCode}</td>
-                          <td>{adm.subjectName}</td>
-                          <td>{adm.totalLectures}</td>
-                          
-                        </tr>
-                      ))}
+                        {
+                            subjects?.length>0?subjects?.map((adm, idx) => (
+                                <tr key={idx}>
+                                  <td>{idx + 1}</td>
+                                  <td>{adm.subjectCode}</td>
+                                  <td>{adm.subjectName}</td>
+                                  <td>{adm.totalLectures}</td>
+                                  
+                                </tr>
+                              )):<h1>No Subject Found</h1>
+                        }
+                      
                     </tbody>
                   </table>
                 </div>
               )}
-            {search && Object.keys(error).length === 0 && (
-              <div className="space-x-3 flex items-center justify-center mt-5">
-                <button
-                  onClick={dltSubject}
-                  className={`${classes.adminFormSubmitButton} bg-blue-500`}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
           </div>
         </div>
       </div>
@@ -267,4 +255,5 @@ const Body = () => {
   );
 };
 
-export default Body;
+
+export default CurriculmnBody;

@@ -67,6 +67,7 @@ export const getStudent = (formData) => async (dispatch) => {
   try {
     const { data } = await api.getMarksStudent(formData);
     console.log(data);
+    alert(data?.message)
     dispatch({ type: GET_STUDENT, payload: data });
   } catch (error) {
     dispatch({ type: SET_ERRORS, payload: error.response.data });
@@ -78,6 +79,7 @@ export const uploadMark =(formData) => async (dispatch) => {
       
      const {data}= await api.uploadMarks(formData);
       console.log(data);
+      alert(data?.message)
       dispatch({ type: MARKS_UPLOADED, payload: true });
     } catch (error) {
       dispatch({ type: SET_ERRORS, payload: error.response.data });

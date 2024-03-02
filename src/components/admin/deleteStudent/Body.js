@@ -14,10 +14,12 @@ const Body = () => {
   const [loading, setLoading] = useState(false);
   const store = useSelector((state) => state);
   const [checkedValue, setCheckedValue] = useState([]);
+  const [radioSelect, setRadioSelect] = useState(true);
 
   const [value, setValue] = useState({
     department: "",
     batch: "",
+    stuId:""
   });
   const [search, setSearch] = useState(false);
 
@@ -80,11 +82,63 @@ const Body = () => {
           <h1>Delete Faculty</h1>
         </div>
         <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
-          <form
+        <form
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="department">Department</label>
+            <div
+              style={{
+                display: "flex",
+                gap: "20px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <div>
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    className="radio"
+                    onClick={()=>setRadioSelect(true)}
+                    checked
+                  />
+                </div>
+                <div>
+                  <label>Single</label>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  
+                }}
+              >
+                <div>
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    onClick={()=>setRadioSelect(false)}
+                    className="radio"
+                  />
+                </div>
+                <div>
+                  <label>All</label>
+                </div>
+              </div>
+            </div>
+           <div>
+              {/* form */}
+              {
+                !radioSelect&&
+                <div>
+                   <label htmlFor="department">Department</label>
             <Select
               required
               displayEmpty
@@ -102,21 +156,75 @@ const Body = () => {
                 </MenuItem>
               ))}
             </Select>
-            <label htmlFor="batch">Batch</label>
+            <br />
+            <label className="mt-2" htmlFor="batch">Batch</label><br />
             <input
               required
-              type="text"
               placeholder="10"
-              value={value.batch}
+              type="text"
               onChange={(e) => setValue({ ...value, batch: e.target.value })}
             />
 
             <button
-              className={`${classes.adminFormSubmitButton} w-56`}
+              className={`${classes.adminFormSubmitButton} mt-3 w-56`}
               type="submit"
             >
               Search
             </button>
+                </div>
+              }
+           </div>
+           <div>
+              {/* form */}
+              {
+                 radioSelect&&
+                <div>
+                   <label htmlFor="department">Department:</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.department}
+              onChange={(e) =>
+                setValue({ ...value, department: e.target.value })
+              }
+            >
+              <MenuItem value="">None</MenuItem>
+              {departments?.map((dp, idx) => (
+                <MenuItem key={idx} value={dp.department}>
+                  {dp.department}
+                </MenuItem>
+              ))}
+            </Select>
+            <br />
+
+           <label htmlFor="batch">Batch:</label> <br />
+            <input
+              required
+              placeholder="10"
+              type="text"
+              onChange={(e) => setValue({ ...value, batch: e.target.value })}
+            />
+            <br />
+          <label htmlFor="batch">StudentID:</label><br />
+            <input
+              required
+              placeholder="ASHxxxxxxxM"
+              type="text"
+              onChange={(e) => setValue({ ...value, stuId: e.target.value })}
+            />
+           
+           
+            <button
+              className={`${classes.adminFormSubmitButton} mt-3 w-56`}
+              type="submit"
+            >
+              Search
+            </button>
+                </div>
+              }
+           </div>
           </form>
           <div className="col-span-3 mr-6">
             <div className={classes.loadingAndError}>
@@ -139,59 +247,32 @@ const Body = () => {
               !loading &&
               Object.keys(error).length === 0 &&
               students?.length !== 0 && (
-                <div className={`${classes.adminData} h-[20rem]`}>
-                  <div className="grid grid-cols-8">
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Select
-                    </h1>
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Name
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      StuId
-                    </h1>
-
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Session
-                    </h1>
-                  </div>
-                  {students?.map((adm, idx) => (
-                    <div
-                      key={idx}
-                      className={`${classes.adminDataBody} grid-cols-8`}
-                    >
-                      <input
-                        onChange={handleInputChange}
-                        value={adm._id}
-                        className="col-span-1 border-2 w-16 h-4 mt-3 px-2 "
-                        type="checkbox"
-                      />
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}
-                      >
-                        {idx + 1}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {adm.name}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {adm?.stuId}
-                      </h1>
-
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {adm?.year}
-                      </h1>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="table">
+                    {/* head */}
+                    <thead>
+                      <tr>
+                        <th>Sr no</th>
+                        <th>Name</th>
+                        <th>StuID</th>
+                        <th>Email</th>
+                        <th>Session</th>
+                        <th>Batch</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students?.map((stu, idx) => (
+                        <tr key={idx}>
+                          <td>{idx + 1}</td>
+                          <td>{stu.name}</td>
+                          <td>{stu.stuId}</td>
+                          <td>{stu.email}</td>
+                          <td>{stu.year}</td>
+                          <td>{stu.batch}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
             {search && Object.keys(error).length === 0 && (

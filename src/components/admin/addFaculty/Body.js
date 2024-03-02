@@ -72,7 +72,7 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <AddIcon />
-          <h1>Add Faculty</h1>
+          <h1>Add Teacher</h1>
         </div>
         <div className=" mr-10 bg-white flex flex-col rounded-xl ">
           <form className={classes.adminForm0} onSubmit={handleSubmit}>
@@ -226,7 +226,7 @@ const Body = () => {
             <div className={classes.loadingAndError}>
               {loading && (
                 <Spinner
-                  message="Adding Faculty"
+                  message="Adding Teacher"
                   height={30}
                   width={150}
                   color="#111111"

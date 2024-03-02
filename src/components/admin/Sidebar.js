@@ -73,6 +73,20 @@ const Sidebar = () => {
             <h1 className="font-normal">Create Notice</h1>
           </NavLink>
         </div>
+
+        <div className="">
+          <NavLink
+            to="/admin/visit/currculumn"
+            className={({ isActive }) =>
+              isActive ? isActiveStyle : isNotActiveStyle
+            }>
+            <AddIcon className="" />
+            <h1 className="font-normal">Curriculum</h1>
+          </NavLink>
+        </div>
+
+
+
         <div className="">
           <NavLink
             to="/admin/addadmin"

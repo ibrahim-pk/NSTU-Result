@@ -6,15 +6,18 @@ import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import { SET_ERRORS } from "../../../redux/actionTypes";
+import {Link} from 'react-router-dom'
 const Body = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState({});
   const departments = useSelector((state) => state.admin.allDepartment);
   const [loading, setLoading] = useState(false);
+  const [radioSelect, setRadioSelect] = useState(true);
   const store = useSelector((state) => state);
   const [value, setValue] = useState({
     department: "",
     batch: "",
+    stuId: "",
   });
   const [search, setSearch] = useState(false);
 
@@ -54,38 +57,149 @@ const Body = () => {
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}
           >
-            <label htmlFor="department">Department</label>
-            <Select
-              required
-              displayEmpty
-              sx={{ height: 36, width: 224 }}
-              inputProps={{ "aria-label": "Without label" }}
-              value={value.department}
-              onChange={(e) =>
-                setValue({ ...value, department: e.target.value })
-              }
+            <div
+              style={{
+                display: "flex",
+                gap: "20px",
+              }}
             >
-              <MenuItem value="">None</MenuItem>
-              {departments?.map((dp, idx) => (
-                <MenuItem key={idx} value={dp.department}>
-                  {dp.department}
-                </MenuItem>
-              ))}
-            </Select>
-            <label htmlFor="batch">Batch</label>
-            <input
-              required
-              placeholder="10"
-              type="text"
-              onChange={(e) => setValue({ ...value, batch: e.target.value })}
-            />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <div>
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    className="radio"
+                    onClick={() => setRadioSelect(true)}
+                    checked
+                  />
+                </div>
+                <div>
+                  <label>Single</label>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <div>
+                  <input
+                    type="radio"
+                    name="radio-1"
+                    onClick={() => setRadioSelect(false)}
+                    className="radio"
+                  />
+                </div>
+                <div>
+                  <label>All</label>
+                </div>
+              </div>
+            </div>
+            <div>
+              {/* form */}
+              {!radioSelect && (
+                <div>
+                  <label htmlFor="department">Department</label>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36, width: 224 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.department}
+                    onChange={(e) =>
+                      setValue({ ...value, department: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    {departments?.map((dp, idx) => (
+                      <MenuItem key={idx} value={dp.department}>
+                        {dp.department}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <br />
+                  <label className="mt-2" htmlFor="batch">
+                    Batch
+                  </label>
+                  <br />
+                  <input
+                    required
+                    placeholder="10"
+                    type="text"
+                    onChange={(e) =>
+                      setValue({ ...value, batch: e.target.value })
+                    }
+                  />
 
-            <button
-              className={`${classes.adminFormSubmitButton} w-56`}
-              type="submit"
-            >
-              Search
-            </button>
+                  <button
+                    className={`${classes.adminFormSubmitButton} mt-3 w-56`}
+                    type="submit"
+                  >
+                    Search
+                  </button>
+                </div>
+              )}
+            </div>
+            <div>
+              {/* form */}
+              {radioSelect && (
+                <div>
+                  <label htmlFor="department">Department:</label>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36, width: 224 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.department}
+                    onChange={(e) =>
+                      setValue({ ...value, department: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    {departments?.map((dp, idx) => (
+                      <MenuItem key={idx} value={dp.department}>
+                        {dp.department}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  <br />
+                  <label htmlFor="batch">Batch:</label> <br />
+                  <input
+                    required
+                    placeholder="10"
+                    type="text"
+                    onChange={(e) =>
+                      setValue({ ...value, batch: e.target.value })
+                    }
+                  />
+                  <br />
+                  <label htmlFor="batch">StudentID:</label>
+                  <br />
+                  <input
+                    required
+                    placeholder="ASHxxxxxxxM"
+                    type="text"
+                    onChange={(e) =>
+                      setValue({ ...value, stuId: e.target.value })
+                    }
+                  />
+                  <button
+                    className={`${classes.adminFormSubmitButton} mt-3 w-56`}
+                    type="submit"
+                  >
+                    Search
+                  </button>
+                </div>
+              )}
+            </div>
           </form>
           <div className="col-span-3 mr-6">
             <div className={classes.loadingAndError}>
@@ -108,65 +222,37 @@ const Body = () => {
               !loading &&
               Object.keys(error).length === 0 &&
               students?.length !== 0 && (
-                <div className={classes.adminData}>
-                  <div className="grid grid-cols-10">
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Name
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      stuId
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Email
-                    </h1>
-                    <h1 className={`col-span-1 ${classes.adminDataHeading}`}>
-                      Session
-                    </h1>
-                    <h1 className={`col-span-2 ${classes.adminDataHeading}`}>
-                      Batch
-                    </h1>
-                  </div>
-                  {students?.map((stu, idx) => (
-                    <div
-                      key={idx}
-                      className={`${classes.adminDataBody} grid-cols-10`}
-                    >
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}
-                      >
-                        {idx + 1}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {stu.name}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {stu.stuId}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {stu.email}
-                      </h1>
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}
-                      >
-                        {stu.year}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {stu.batch}
-                      </h1>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto">
+                  <table className="table">
+                    {/* head */}
+                    <thead>
+                      <tr>
+                        <th>Sr no</th>
+                        <th>Name</th>
+                        <th>StuID</th>
+                        <th>Email</th>
+                        <th>Session</th>
+                        <th>Batch</th>
+                        <th>Result</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {students?.map((stu, idx) => (
+                        <tr key={idx}>
+                          <td>{idx + 1}</td>
+                          <td>{stu.name}</td>
+                          <td>{stu.stuId}</td>
+                          <td>{stu.email}</td>
+                          <td>{stu.year}</td>
+                          <td>{stu.batch}</td>
+                          <td><Link to={`/admin/view/result/${stu.stuId}`} className="btn btn-sm">View</Link></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
+
+
               )}
           </div>
         </div>

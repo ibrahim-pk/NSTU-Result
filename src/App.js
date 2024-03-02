@@ -49,6 +49,9 @@ import CreateNotice from "./components/admin/createNotice/CreateNotice";
 import SuperAdmin from "./components/SuperAdmin/SuperAdmin";
 import AddUfaculty from "./components/admin/addUfaculty/AddUfaculty";
 import DeleteUfaculty from "./components/admin/deleteUfaculty/DeleteUfaculty";
+import Curricumn from "./components/admin/visitCurri/Curriculumn";
+import CurricumnFact from "./components/faculty/visitCurri/Curriculumn";
+import ResultRoot from "./components/admin/Result/ResultRoot";
 
 const App = () => {
   return (
@@ -69,6 +72,7 @@ const App = () => {
         element={<AdminFirstTimePassword />}
       />
       <Route path="/admin/createnotice" element={<CreateNotice />} />
+      <Route path="/admin/visit/currculumn" element={<Curricumn />} />
       <Route path="/admin/addadmin" element={<AddAdmin />} />
       <Route path="/admin/deleteadmin" element={<DeleteAdmin />} />
       
@@ -88,6 +92,7 @@ const App = () => {
       <Route path="/admin/addsubject" element={<AddSubject />} />
       <Route path="/admin/allsubject" element={<GetSubject />} />
       <Route path="/admin/allstudent" element={<GetStudent />} />
+      <Route path="/admin/view/result/:id" element={<ResultRoot />} />
 
       {/* Faculty  */}
 
@@ -101,6 +106,7 @@ const App = () => {
       <Route path="/faculty/createtest" element={<CreateTest />} />
       <Route path="/faculty/uploadmarks" element={<UploadMarks />} />
       <Route path="/faculty/markattendance" element={<MarkAttendance />} />
+      <Route path="/faculty/visit/currculumn" element={<CurricumnFact />} />
 
       {/* Student  */}
 

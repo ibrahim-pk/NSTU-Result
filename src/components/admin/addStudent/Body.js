@@ -67,6 +67,7 @@ const Body = () => {
           fatherName: "",
           motherName: "",
           stuId: "",
+          degree:"",
           fatherContactNumber: "",
           motherContactNumber: "",
         });
@@ -127,6 +128,23 @@ const Body = () => {
                     <MenuItem value="Male">Male</MenuItem>
                     <MenuItem value="Female">Female</MenuItem>
                     <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </div>
+                <div className={classes.adminForm3}>
+                  <h1 className={classes.adminLabel}>Degree :</h1>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.degree}
+                    onChange={(e) =>
+                      setValue({ ...value, degree: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="Male">Bsc</MenuItem>
+                    <MenuItem value="Female">Msc</MenuItem>
                   </Select>
                 </div>
                 <div className={classes.adminForm3}>
