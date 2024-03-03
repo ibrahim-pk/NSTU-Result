@@ -39,75 +39,98 @@ const Body = () => {
   });
   const [search, setSearch] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    id: "",
-    department: "",
-    year: "",
-    term: "",
-    subTitle:"",
-    code: "",
-    credit: "",
-    fristEx: "", 
-    secondEx: "",
-    ThirdEx: "",
-    CtAtt: "",
-    finalRes:""
+  const [name, setName] = useState("");
+  const [id, setId] = useState("");
+  const [department, setDepartment] = useState("");
+  const [year, setYear] = useState("");
+  const [term, setTerm] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [code, setCode] = useState("");
+  const [credit, setCredit] = useState("");
+  const [fristEx, setFristEx] = useState("");
+  const [secondEx, setSecondEx] = useState("");
+  const [ThirdEx, setThirdEx] = useState("");
+  const [CtAtt, setCtAtt] = useState("");
+  const [finalRes, setFinalRes] = useState("");
 
+  const [formData, setFormData] = useState({
+    // name: "",
+    // id: "",
+    // department: "",
+    // year: "",
+    // term: "",
+    // subTitle:"",
+    // code: "",
+    // credit: "",
+    // fristEx: "",
+    // secondEx: "",
+    // ThirdEx: "",
+    // CtAtt: "",
+    // finalRes:""
     // Add other fields as needed
   });
 
   // const handleInputChange = (e, sname, id) => {
-  //   const { name, value } = e.target;
-  //   console.log("Input Name:", name);
-  //   console.log("Input Value:", value);
-  //   setFormData(prevFormData => ({
-  //     ...prevFormData,
+
+  //   setFormData({
+  //     ...formData,
   //     name: sname,
   //     id: id,
+
+  //     // ThirdEx: (
+  //     //   (parseFloat(formData.fristEx) + parseFloat(formData.secondEx)) /
+  //     //   2
+  //     // ).toFixed(2),
+  //   });
+  //   //setFormData({ ...formData, id:id })
+  //   const { name, value } = e.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
   //     [name]: value,
-  //     ThirdEx: ((parseFloat(prevFormData.fristEx) + parseFloat(prevFormData.secondEx)) / 2).toFixed(2)
   //   }));
   // };
 
-
-
-  const handleInputChange = (e, sname, id) => {
-    // console.log(sname,id);
-    setFormData({
-      ...formData,
-      name: sname,
-      id: id,
-
-      // ThirdEx: (
-      //   (parseFloat(formData.fristEx) + parseFloat(formData.secondEx)) /
-      //   2
-      // ).toFixed(2),
-    });
-    //setFormData({ ...formData, id:id })
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
   const uploadMarks = () => {
-    console.log("marks:",formData);
+    console.log(name,
+      id,
+      department,
+      year,
+      term,
+      subTitle,
+      code,
+      credit,
+      fristEx,
+      secondEx,
+      ThirdEx,
+      CtAtt);
     setError({});
-    dispatch(uploadMark(formData));
-    setFormData({
-      ...formData,
-      fristEx:"",
-      secondEx:"",
-      ThirdEx:"",
-      CtAtt:"",
-      credit:"",
-      subTitle:""
-    })
+    dispatch(uploadMark(
+        {
+          name,
+        id,
+        department,
+        year,
+        term,
+        subTitle,
+        code,
+        credit,
+        fristEx,
+        secondEx,
+        ThirdEx,
+        CtAtt
+        }
+      )
+    );
 
-   };
 
+    // setFormData({
+    //   ...formData,
+    //   fristEx:"",
+    //   secondEx:"",
+    //   ThirdEx:"",
+    //   CtAtt:"",
+    // })
+  };
 
   useEffect(() => {
     if (Object.keys(store.errors)?.length !== 0) {
@@ -136,14 +159,20 @@ const Body = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target.value);
-    console.log(value);
-    setFormData({
-      ...formData,
-      department: value.department,
-      year: value.year,
-      term: value.section,
-    });
+
+    // setFormData({
+    //   ...formData,
+    //   department: value.department,
+    //   year: value.year,
+    //   term: value.section,
+
+    // });
+
+    setDepartment(value.department);
+    setYear(value.year);
+    setTerm(value.section);
+
+    console.log(formData);
     setSearch(true);
     setLoading(true);
     setError({});
@@ -160,7 +189,8 @@ const Body = () => {
 
   const handleCode = (e) => {
     setValue({ ...value, courseCode: e.target.value });
-    setFormData({ ...formData, code: e.target.value });
+    // setFormData({ ...formData, code: e.target.value });
+    setCode(e.target.value);
 
     // setFormData({ ...formData, code: e.target.value })
     // handleSubmit(e)
@@ -169,8 +199,6 @@ const Body = () => {
   // const students = useSelector((state) => state.admin.students.result);
   // const allSubject = useSelector((state) => state.admin.students.subject);
   // //console.log(students);
-
- 
 
   useEffect(() => {
     if (students?.length !== 0) setLoading(false);
@@ -200,11 +228,12 @@ const Body = () => {
     }
   }, [value.year, value.section]);
 
-  const handleCredit=(credit,title)=>{
-    console.log(credit,title);
-    setFormData({ ...formData, credit:credit,subTitle:title});
-    
-  }
+  const handleCredit = (credit, title) => {
+    console.log(credit, title);
+    setCredit(credit);
+    setSubTitle(title);
+    // setFormData({ ...formData, credit:credit,subTitle:title});
+  };
 
   return (
     <div className="flex-[0.8] mt-2">
@@ -299,7 +328,11 @@ const Body = () => {
               >
                 <MenuItem value="">None</MenuItem>
                 {allSubject?.map((dp, idx) => (
-                  <MenuItem onClick={()=>handleCredit(dp?.credit,dp?.subjectName)} key={idx} value={dp.subjectCode}>
+                  <MenuItem
+                    onClick={() => handleCredit(dp?.credit, dp?.subjectName)}
+                    key={idx}
+                    value={dp.subjectCode}
+                  >
                     {dp.subjectCode}
                   </MenuItem>
                 ))}
@@ -330,224 +363,162 @@ const Body = () => {
               </p>
             )}
           </div>
-          {!loading &&Object.keys(error)?.length === 0 &&
-            students?.length !== 0&& value?.courseCode? (
-            
-              <div className="overflow-x-auto">
-                <table className="table">
-                  {/* head */}
-                  <thead>
-                    <tr>
-                      <th>Sr no</th>
-                      <th>Name</th>
-                      <th>StuID</th>
-                      <th>1st Examiner</th>
-                      <th>2nd Examiner</th>
-                      <th>CT+ATT</th>
-                      <th>Difference</th>
-                      <th>3rd Exaniner</th>
-                      <th>Final Mark</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {students?.map((stu, idx) => (
-                      <tr key={idx}>
-                        <td>{idx + 1}</td>
-                        <td>{stu.name}</td>
-                        <td>{stu.stuId}</td>
-                        <td>
+          {!loading &&
+          Object.keys(error)?.length === 0 &&
+          students?.length !== 0 &&
+          value?.courseCode ? (
+            <div className="overflow-x-auto">
+              <table className="table">
+                {/* head */}
+                <thead>
+                  <tr>
+                    <th>Sr no</th>
+                    <th>Name</th>
+                    <th>StuID</th>
+                    <th>1st Examiner</th>
+                    <th>2nd Examiner</th>
+                    <th>CT+ATT</th>
+                    <th>Difference</th>
+                    <th>3rd Exaniner</th>
+                    <th>Final Mark</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students?.map((stu, idx) => (
+                    <tr key={idx}>
+                      <td>{idx + 1}</td>
+                      <td>{stu.name}</td>
+                      <td>{stu.stuId}</td>
+                      <td>
                         <div class="flex">
-                            <div>
-                              <input
-                                type="number"
-                                name="fristEx"
-                                // value={result[0]?.fristEx}
-                                onChange={(e) =>handleInputChange(e, stu.name, stu.stuId)}
-                                className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                placeholder="Enter Number"
-                              />
-                            </div>
-                            <div>
-                             <button
-                              onClick={uploadMarks}
-                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r">
-                               save
-                              </button>
-                             </div>
-                            <div>
-                              <input
-                                type="text"
-                                value={(result.find(res => res.id === stu.stuId)?.fristEx) || ''}
-                                className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                disabled
-                              />
-                            </div>
-                             
-                          </div>                       
-                        </td>
-                        <td >
-                          <div class="flex">
-                            <div>
-                              <input
-                                type="number"
-                                name="secondEx"
-                                // value={result[0]?.fristEx}
-                                onChange={(e) =>handleInputChange(e, stu.name, stu.stuId)}
-                                className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                placeholder="Enter Number"
-                              />
-                            </div>
-                            <div>
-                             <button
-                              onClick={uploadMarks}
-                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r">
-                               save
-                              </button>
-                             </div>
-                            <div>
-                              <input
-                                type="text"
-                                value={(result.find(res => res.id === stu.stuId)?.secondEx) || ''}
-                                class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                disabled
-                              />
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                          
-                         
-                         <div class="flex">
-                            <div>
-                              <input
-                                type="number"
-                                name="CtAtt"
-                                // value={result[0]?.fristEx}
-                                onChange={(e) =>handleInputChange(e, stu.name, stu.stuId)}
-                                class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                placeholder="Enter Number"
-                              />
-                            </div>
-                            <div>
-                             <button
-                              onClick={uploadMarks}
-                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r">
-                               save
-                              </button>
-                             </div>
-                            <div>
-                              <input
-                                type="text"
-                                value={(result.find(res => res.id === stu.stuId)?.CtAtt) || ''}
-                                class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                disabled
-                              />
-                            </div>
-                          </div>
-
-
-                        </td>
-
-                        <td>
-                          {Math.abs(
-                            parseFloat(
-                              result.find((res) => res.id === stu.stuId)
-                                ?.fristEx || ""
-                            ) -
-                              parseFloat(
-                                result.find((res) => res.id === stu.stuId)
-                                  ?.secondEx || ""
-                              )
-                          ) > 14 ? (
-                            <h3
-                              style={{
-                                color: "red",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {Math.abs(
-                                parseFloat(
-                                  result.find((res) => res.id === stu.stuId)
-                                    ?.fristEx || ""
-                                ) -
-                                  parseFloat(
-                                    result.find((res) => res.id === stu.stuId)
-                                      ?.secondEx || ""
-                                  )
-                              )}
-                            </h3>
-                          ) : (
-                            <h3
-                              style={{
-                                color: "green",
-                                marginLeft: "10px",
-                              }}
-                            >
-                              {Math.abs(
-                                parseFloat(
-                                  result.find((res) => res.id === stu.stuId)
-                                    ?.fristEx || ""
-                                ) -
-                                  parseFloat(
-                                    result.find((res) => res.id === stu.stuId)
-                                      ?.secondEx || ""
-                                  )
-                              )}
-                            </h3>
-                          )}
-                        </td>
-                        <td>
-                          {Math.abs(
-                            parseFloat(
-                              result.find((res) => res.id === stu.stuId)
-                                ?.fristEx || ""
-                            ) -
-                              parseFloat(
-                                result.find((res) => res.id === stu.stuId)
-                                  ?.secondEx || ""
-                              )
-                          ) > 14 ? (
-                            <div class="flex">
-                            <div>
+                          <div>
                             <input
-                            name="ThirdEx"
-                            onChange={(e) =>handleInputChange(e, stu.name, stu.stuId)}
-                            className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                            type="number"
-                          />
-                            </div>
-                            <div>
-                             <button
-                              onClick={uploadMarks}
-                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r">
-                               save
-                              </button>
-                             </div>
-                            <div>
-                              <input
-                                type="text"
-                                value={(result.find(res => res.id === stu.stuId)?.ThirdEx) || ''}
-                                className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                                disabled
-                              />
-                            </div>
+                              type="number"
+                              name="fristEx"
+                              // value={result[0]?.fristEx}
+                              onChange={(e) => (
+                                setName(stu.name),
+                                setId(stu.stuId),
+                                setFristEx(e.target.value)
+                              )}
+                              className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              placeholder="Enter Number"
+                            />
                           </div>
-                          ) : (
-                            <h3
-                              style={{
-                                color: "green",
-                                marginLeft: "10px",
-                              }}
+                          <div>
+                            <button
+                              onClick={uploadMarks}
+                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
                             >
-                             Valid
-                            </h3>
-                          )}
-                        </td>
-                        <td>
-                          {" "}
-                          <input
-                            name="ThirdEx"
-                            value=  {Math.abs(
+                              save
+                            </button>
+                          </div>
+                          <div>
+                            <input
+                              type="text"
+                              value={
+                                result.find((res) => res.id === stu.stuId)
+                                  ?.fristEx || ""
+                              }
+                              className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="flex">
+                          <div>
+                            <input
+                              type="number"
+                              name="secondEx"
+                              // value={result[0]?.fristEx}
+                              onChange={(e) => (
+                                setName(stu.name),
+                                setId(stu.stuId),
+                                setSecondEx(e.target.value)
+                              )}
+                              className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              placeholder="Enter Number"
+                            />
+                          </div>
+                          <div>
+                            <button
+                              onClick={uploadMarks}
+                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
+                            >
+                              save
+                            </button>
+                          </div>
+                          <div>
+                            <input
+                              type="text"
+                              value={
+                                result.find((res) => res.id === stu.stuId)
+                                  ?.secondEx || ""
+                              }
+                              class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="flex">
+                          <div>
+                            <input
+                              type="number"
+                              name="CtAtt"
+                              // value={result[0]?.fristEx}
+                              onChange={(e) => (
+                                setName(stu.name),
+                                setId(stu.stuId),
+                                setCtAtt(e.target.value)
+                              )}
+                              class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              placeholder="Enter Number"
+                            />
+                          </div>
+                          <div>
+                            <button
+                              onClick={uploadMarks}
+                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
+                            >
+                              save
+                            </button>
+                          </div>
+                          <div>
+                            <input
+                              type="text"
+                              value={
+                                result.find((res) => res.id === stu.stuId)
+                                  ?.CtAtt || ""
+                              }
+                              class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        {Math.abs(
+                          parseFloat(
+                            result.find((res) => res.id === stu.stuId)
+                              ?.fristEx || ""
+                          ) -
+                            parseFloat(
+                              result.find((res) => res.id === stu.stuId)
+                                ?.secondEx || ""
+                            )
+                        ) > 14 ? (
+                          <h3
+                            style={{
+                              color: "red",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {Math.abs(
                               parseFloat(
                                 result.find((res) => res.id === stu.stuId)
                                   ?.fristEx || ""
@@ -556,73 +527,178 @@ const Body = () => {
                                   result.find((res) => res.id === stu.stuId)
                                     ?.secondEx || ""
                                 )
-                            ) > 14 ? (
-                              (((Math.abs(
-                                parseFloat(
-                                  result.find((res) => res.id === stu.stuId)
-                                    ?.ThirdEx || ""
-                                )+(
-
-                                  Math.abs(
-                                    parseFloat(
-                                      result.find((res) => res.id === stu.stuId)
-                                        ?.fristEx || ""
-                                    ) -
-                                      parseFloat(
-                                        result.find((res) => res.id === stu.stuId)
-                                          ?.ThirdEx || ""
-                                      )
-                                  ) <
-
-                                  Math.abs(
-                                    parseFloat(
-                                      result.find((res) => res.id === stu.stuId)
-                                        ?.secondEx || ""
-                                    ) -
-                                      parseFloat(
-                                        result.find((res) => res.id === stu.stuId)
-                                          ?.ThirdEx || ""
-                                      )
-                                  )?parseFloat(
-                                    result.find((res) => res.id === stu.stuId)
-                                      ?.fristEx || ""
-                                  ): parseFloat(
-                                    result.find((res) => res.id === stu.stuId)
-                                      ?.secondEx || ""
-                                  )
-                                  
-                          
-                                ) 
-                              ))/2)+parseFloat(
-                                result.find((res) => res.id === stu.stuId)
-                                  ?.CtAtt || "")
-                              )  
-                            ) :(((Math.abs(
+                            )}
+                          </h3>
+                        ) : (
+                          <h3
+                            style={{
+                              color: "green",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            {Math.abs(
                               parseFloat(
                                 result.find((res) => res.id === stu.stuId)
                                   ?.fristEx || ""
-                              )+
+                              ) -
                                 parseFloat(
                                   result.find((res) => res.id === stu.stuId)
                                     ?.secondEx || ""
                                 )
-                            ))/2)+parseFloat(
+                            )}
+                          </h3>
+                        )}
+                      </td>
+                      <td>
+                        {Math.abs(
+                          parseFloat(
+                            result.find((res) => res.id === stu.stuId)
+                              ?.fristEx || ""
+                          ) -
+                            parseFloat(
                               result.find((res) => res.id === stu.stuId)
-                                ?.CtAtt || ""))                         
-                          
+                                ?.secondEx || ""
+                            )
+                        ) > 14 ? (
+                          <div class="flex">
+                            <div>
+                              <input
+                                name="ThirdEx"
+                                onChange={(e) => (
+                                  setName(stu.name),
+                                  setId(stu.stuId),
+                                  setThirdEx(e.target.value)
+                                )}
+                                className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                                type="number"
+                              />
+                            </div>
+                            <div>
+                              <button
+                                onClick={uploadMarks}
+                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
+                              >
+                                save
+                              </button>
+                            </div>
+                            <div>
+                              <input
+                                type="text"
+                                value={
+                                  result.find((res) => res.id === stu.stuId)
+                                    ?.ThirdEx || ""
+                                }
+                                className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                                disabled
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <h3
+                            style={{
+                              color: "green",
+                              marginLeft: "10px",
+                            }}
+                          >
+                            Valid
+                          </h3>
+                        )}
+                      </td>
+                      <td>
+                        {" "}
+                        <input
+                          name="ThirdEx"
+                          value={
+                            Math.abs(
+                              parseFloat(
+                                result.find((res) => res.id === stu.stuId)
+                                  ?.fristEx || ""
+                              ) -
+                                parseFloat(
+                                  result.find((res) => res.id === stu.stuId)
+                                    ?.secondEx || ""
+                                )
+                            ) > 14
+                              ? Math.abs(
+                                  parseFloat(
+                                    result.find((res) => res.id === stu.stuId)
+                                      ?.ThirdEx || ""
+                                  ) +
+                                    (Math.abs(
+                                      parseFloat(
+                                        result.find(
+                                          (res) => res.id === stu.stuId
+                                        )?.fristEx || ""
+                                      ) -
+                                        parseFloat(
+                                          result.find(
+                                            (res) => res.id === stu.stuId
+                                          )?.ThirdEx || ""
+                                        )
+                                    ) <
+                                    Math.abs(
+                                      parseFloat(
+                                        result.find(
+                                          (res) => res.id === stu.stuId
+                                        )?.secondEx || ""
+                                      ) -
+                                        parseFloat(
+                                          result.find(
+                                            (res) => res.id === stu.stuId
+                                          )?.ThirdEx || ""
+                                        )
+                                    )
+                                      ? parseFloat(
+                                          result.find(
+                                            (res) => res.id === stu.stuId
+                                          )?.fristEx || ""
+                                        )
+                                      : parseFloat(
+                                          result.find(
+                                            (res) => res.id === stu.stuId
+                                          )?.secondEx || ""
+                                        ))
+                                ) /
+                                  2 +
+                                parseFloat(
+                                  result.find((res) => res.id === stu.stuId)
+                                    ?.CtAtt || ""
+                                )
+                              : Math.abs(
+                                  parseFloat(
+                                    result.find((res) => res.id === stu.stuId)
+                                      ?.fristEx || ""
+                                  ) +
+                                    parseFloat(
+                                      result.find((res) => res.id === stu.stuId)
+                                        ?.secondEx || ""
+                                    )
+                                ) /
+                                  2 +
+                                parseFloat(
+                                  result.find((res) => res.id === stu.stuId)
+                                    ?.CtAtt || ""
+                                )
                           }
-                            className="border-2 w-24 px-2 h-8 "
-                            type="text"
-                            disabled
-                          />
-                        </td>
-
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ):!loading&&<h1 style={{color:'red',textAlign:'center',fontSize:'40px'}}>No Result</h1>}
+                          className="border-2 w-24 px-2 h-8 "
+                          type="text"
+                          disabled
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            !loading && (
+              <h1
+                style={{ color: "red", textAlign: "center", fontSize: "40px" }}
+              >
+                No Result
+              </h1>
+            )
+          )}
           {/* {search && Object.keys(error)?.length === 0 && (
             <div className="">
               {allSubject?.length > 0 && (

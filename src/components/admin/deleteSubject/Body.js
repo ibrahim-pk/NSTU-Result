@@ -19,6 +19,7 @@ const Body = () => {
     department: "",
     year: "",
     term: "",
+    degree:""
   });
   const [search, setSearch] = useState(false);
 
@@ -85,6 +86,22 @@ const Body = () => {
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}
           >
+            <label htmlFor="department">Degree</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.degree}
+              onChange={(e) =>
+                setValue({ ...value, degree: e.target.value })
+              }
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="Bsc">Bsc</MenuItem>
+              <MenuItem value="Msc">Msc</MenuItem>
+              
+            </Select>
             <label htmlFor="department">Department</label>
             <Select
               required
@@ -216,7 +233,7 @@ const Body = () => {
                 //   ))}
                 // </div>
 
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto overflow-y-auto h-72">
                   <table className="table">
                     {/* head */}
                     <thead>

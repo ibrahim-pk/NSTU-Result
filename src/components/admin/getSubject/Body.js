@@ -17,6 +17,7 @@ const Body = () => {
     department: "",
     year: "",
     term: "",
+    degree:""
   });
   const [search, setSearch] = useState(false);
 
@@ -56,6 +57,22 @@ const Body = () => {
             className="flex flex-col space-y-2 col-span-1"
             onSubmit={handleSubmit}
           >
+             <label htmlFor="department">Degree</label>
+            <Select
+              required
+              displayEmpty
+              sx={{ height: 36, width: 224 }}
+              inputProps={{ "aria-label": "Without label" }}
+              value={value.degree}
+              onChange={(e) =>
+                setValue({ ...value, degree: e.target.value })
+              }
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="Bsc">Bsc</MenuItem>
+              <MenuItem value="Msc">Msc</MenuItem>
+              
+            </Select>
             <label htmlFor="department">Department</label>
             <Select
               required
@@ -131,48 +148,31 @@ const Body = () => {
               !loading &&
               Object.keys(error).length === 0 &&
               subjects?.length !== 0 && (
-                <div className={classes.adminData}>
-                  <div className="grid grid-cols-7">
-                    <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                      Sr no.
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-2`}>
-                      Subject Code
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-3`}>
-                      Subject Name
-                    </h1>
-                    <h1 className={`${classes.adminDataHeading} col-span-1`}>
-                      Total Lectures
-                    </h1>
-                  </div>
-                  {subjects?.map((sub, idx) => (
-                    <div
-                      key={idx}
-                      className={`${classes.adminDataBody} grid-cols-7`}
-                    >
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}
-                      >
-                        {idx + 1}
-                      </h1>
-                      <h1
-                        className={`col-span-2 ${classes.adminDataBodyFields}`}
-                      >
-                        {sub.subjectCode}
-                      </h1>
-                      <h1
-                        className={`col-span-3 ${classes.adminDataBodyFields}`}
-                      >
-                        {sub.subjectName}
-                      </h1>
-                      <h1
-                        className={`col-span-1 ${classes.adminDataBodyFields}`}
-                      >
-                        {sub.totalLectures}
-                      </h1>
-                    </div>
-                  ))}
+                <div className="overflow-x-auto overflow-y-auto h-72">
+                  <table className="table">
+                    {/* head */}
+                    <thead>
+                      <tr>
+                       
+                        <th>Sr no</th>
+                        <th>Subject Code</th>
+                        <th>Subject Name</th>
+                        <th>Total Lecture</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subjects?.map((adm, idx) => (
+                        <tr key={idx}>
+                          
+                          <td>{idx + 1}</td>
+                          <td>{adm.subjectCode}</td>
+                          <td>{adm.subjectName}</td>
+                          <td>{adm.totalLectures}</td>
+                          
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               )}
           </div>

@@ -47,6 +47,8 @@ const Body = () => {
     setError({});
     setLoading(true);
     dispatch(addSubject(value));
+    setLoading(false);
+  
   };
 
   useEffect(() => {
