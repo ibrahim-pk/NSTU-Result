@@ -62,8 +62,10 @@ const CurriculmnBody = () => {
     <div className="flex-[0.8] mt-3">
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
-          <DeleteIcon />
-          <h1>Curriculum</h1>
+          <h1 className="btn btn-sm">14-batch</h1>
+          <h1 className="btn btn-sm">15-batch</h1>
+          <h1 className="btn btn-sm">16-batch</h1>
+          <h1 className="btn btn-sm">17-batch</h1>
         </div>
         <div className=" mr-10 bg-white grid grid-cols-4 rounded-xl pt-6 pl-6 h-[29.5rem]">
           <form

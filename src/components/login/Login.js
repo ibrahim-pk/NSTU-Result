@@ -30,11 +30,11 @@ const Login = () => {
             Teacher
           </Link>
           </div>
-          {/* <div>
+          <div>
           <Link to="/login/studentlogin" className="btn-student mx-2">
             Student
           </Link>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

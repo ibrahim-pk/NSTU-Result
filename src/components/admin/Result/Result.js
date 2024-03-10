@@ -4,23 +4,7 @@ import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { TGPA, calculateGradePoint } from "../../resultCalculation/ResultGrade";
-const results = [
-  {
-    courseCode: "CS101",
-    credit: 3,
-    courseTitle: "Introduction to Computer Science",
-    tgpa: 3.5,
-    grade: "A",
-  },
-  {
-    courseCode: "MATH201",
-    credit: 2,
-    courseTitle: "Calculus",
-    tgpa: 3.7,
-    grade: "A",
-  },
-  // Add more results as needed
-];
+
 
 const ResultTable = () => {
   const { id } = useParams();
@@ -70,6 +54,9 @@ const ResultTable = () => {
 
   let t11allcredit;
   let t11gradepoint;
+  let t12allcredit;
+  let t12gradepoint;
+
   let t12;
   let t21;
   let t22;
@@ -81,425 +68,450 @@ const ResultTable = () => {
   if (result?.length > 0) {
     s11 = result.filter((res) => res?.year === "1" && res?.term === "1");
     s12 = result.filter((res) => res?.year === "1" && res?.term === "2");
-    s21 = result.filter((res) => res?.year === "2" && res?.term === "1");
-    s22 = result.filter((res) => res?.year === "2" && res?.term === "2");
-    s31 = result.filter((res) => res?.year === "3" && res?.term === "1");
-    s32 = result.filter((res) => res?.year === "3" && res?.term === "2");
-    s41 = result.filter((res) => res?.year === "4" && res?.term === "1");
-    s42 = result.filter((res) => res?.year === "4" && res?.term === "2");
+    // s21 = result.filter((res) => res?.year === "2" && res?.term === "1");
+    // s22 = result.filter((res) => res?.year === "2" && res?.term === "2");
+    // s31 = result.filter((res) => res?.year === "3" && res?.term === "1");
+    // s32 = result.filter((res) => res?.year === "3" && res?.term === "2");
+    // s41 = result.filter((res) => res?.year === "4" && res?.term === "1");
+    // s42 = result.filter((res) => res?.year === "4" && res?.term === "2");
 
-    c11 = result.reduce((i, c) => c.year === "1" && c.term === "1" && i + parseFloat(c?.credit),0);
-    c12 = result.reduce(
-      (i, c) => c.year === "1" && c.term === "2" && i + parseFloat(c?.credit),
-      0
-    );
-    c21 = result.reduce(
-      (i, c) => c.year === "2" && c.term === "1" && i + parseFloat(c?.credit),
-      0
-    );
-    c22 = result.reduce(
-      (i, c) => c.year === "2" && c.term === "2" && i + parseFloat(c?.credit),
-      0
-    );
-    c31 = result.reduce(
-      (i, c) => c.year === "3" && c.term === "1" && i + parseFloat(c?.credit),
-      0
-    );
-    c32 = result.reduce(
-      (i, c) => c.year === "3" && c.term === "2" && i + parseFloat(c?.credit),
-      0
-    );
-    c41 = result.reduce(
-      (i, c) => c.year === "4" && c.term === "1" && i + parseFloat(c?.credit),
-      0
-    );
-    c42 = result.reduce(
-      (i, c) => c.year === "4" && c.term === "2" && i + parseFloat(c?.credit),
-      0
-    );
+    // c11 = result.reduce((i, c) => (c.year === "1" && c.term === "1") && i + parseFloat(c?.credit),0);
+    c11 = result.reduce(
+      (i, c) => {
+        const credit = parseFloat(c?.credit);
+        return (c.year === "1" && c.term === "1") && !isNaN(credit) ? i + credit : i;
+      }, 0);
+    
 
+   
+      c12 = result.reduce(
+        (i, c) => {
+          const credit = parseFloat(c?.credit);
+          return (c.year === "1" && c.term === "2") && !isNaN(credit) ? i + credit : i;
+        }, 0);
+  
+    //     c21 = result.reduce(
+    //   (i, c) => c.year === "2" && c.term === "1" && i + parseFloat(c?.credit),
+    //   0
+    // );
+    // c22 = result.reduce(
+    //   (i, c) => c.year === "2" && c.term === "2" && i + parseFloat(c?.credit),
+    //   0
+    // );
+    // c31 = result.reduce(
+    //   (i, c) => c.year === "3" && c.term === "1" && i + parseFloat(c?.credit),
+    //   0
+    // );
+    // c32 = result.reduce(
+    //   (i, c) => c.year === "3" && c.term === "2" && i + parseFloat(c?.credit),
+    //   0
+    // );
+    // c41 = result.reduce(
+    //   (i, c) => c.year === "4" && c.term === "1" && i + parseFloat(c?.credit),
+    //   0
+    // );
+    // c42 = result.reduce(
+    //   (i, c) => c.year === "4" && c.term === "2" && i + parseFloat(c?.credit),
+    //   0
+    // );
 
-
-    uc11 = result.reduce(
-      (i, result) =>
-        result.year === "1" &&
-        result.term === "1" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0),
-            result?.credit
-          ).allCredit,
-      0
-    );
+ 
+  
 
 
-    uc12 = result.reduce(
-      (i, result) =>
-        result.year === "1" &&
-        result.term === "2" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
 
-    uc21 = result.reduce(
-      (i, result) =>
-        result.year === "2" &&
-        result.term === "1" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
+    // uc11 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "1" &&
+    //     result.term === "1" &&
+    //     result.id === student[0].stuId &&
+    //     i +calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0),
+    //         result?.credit
+    //       ).allCredit,
+    //   0
+    // );
 
-    uc22 = result.reduce(
-      (i, result) =>
-        result.year === "2" &&
-        result.term === "2" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
 
-    uc31 = result.reduce(
-      (i, result) =>
-        result.year === "3" &&
-        result.term === "1" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
+     uc11 = result.reduce((accumulator, currentResult) => {
+    if (
+        currentResult.year === "1" &&
+        currentResult.term === "1" &&
+        currentResult.id === student[0].stuId
+    ) {
+        const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+        const avgMarks = marksDifference > 14 ?
+            Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                    parseFloat(currentResult.fristEx || 0) :
+                    parseFloat(currentResult.secondEx || 0))) / 2 :
+            (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+        const credit = currentResult.credit || 0;
+        const { allCredit } = calculateGradePoint(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+        return accumulator + allCredit;
+    } else {
+        return accumulator;
+    }
+}, 0);
 
-    uc32 = result.reduce(
-      (i, result) =>
-        result.year === "3" &&
-        result.term === "2" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0),
-            result?.credit
-          ).allCredit,
-      0
-    );
 
-    uc41 = result.reduce(
-      (i, result) =>
-        result.year === "4" &&
-        result.term === "1" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
+uc12 = result.reduce((accumulator, currentResult) => {
+  if (
+      currentResult.year === "1" &&
+      currentResult.term === "2" &&
+      currentResult.id === student[0].stuId
+  ) {
+      const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+      const avgMarks = marksDifference > 14 ?
+          Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                  parseFloat(currentResult.fristEx || 0) :
+                  parseFloat(currentResult.secondEx || 0))) / 2 :
+          (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+      const credit = currentResult.credit || 0;
+      const { allCredit } = calculateGradePoint(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+      return accumulator + allCredit;
+  } else {
+      return accumulator;
+  }
+}, 0);
 
-    uc42 = result.reduce(
-      (i, result) =>
-        result.year === "4" &&
-        result.term === "2" &&
-        result.id === student[0].stuId &&
-        i +
-          calculateGradePoint(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-          ).point,
-      0
-    );
+
+
+
+
+
+
+
+
+    // uc21 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "2" &&
+    //     result.term === "1" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //       ).point,
+    //   0
+    // );
+
+    // uc22 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "2" &&
+    //     result.term === "2" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //       ).point,
+    //   0
+    // );
+
+    // uc31 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "3" &&
+    //     result.term === "1" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //       ).point,
+    //   0
+    // );
+
+    // uc32 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "3" &&
+    //     result.term === "2" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0),
+    //         result?.credit
+    //       ).allCredit,
+    //   0
+    // );
+
+    // uc41 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "4" &&
+    //     result.term === "1" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //       ).point,
+    //   0
+    // );
+
+    // uc42 = result.reduce(
+    //   (i, result) =>
+    //     result.year === "4" &&
+    //     result.term === "2" &&
+    //     result.id === student[0].stuId &&
+    //     i +
+    //       calculateGradePoint(
+    //         Math.abs(
+    //           parseFloat(result?.fristEx || 0) -
+    //             parseFloat(result.secondEx || 0)
+    //         ) > 14
+    //           ? Math.abs(
+    //               parseFloat(result?.ThirdEx || 0) +
+    //                 (Math.abs(
+    //                   parseFloat(result?.fristEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 ) <
+    //                 Math.abs(
+    //                   parseFloat(result?.secondEx || 0) -
+    //                     parseFloat(result?.ThirdEx || 0)
+    //                 )
+    //                   ? parseFloat(result?.fristEx || 0)
+    //                   : parseFloat(result?.secondEx || 0))
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //           : Math.abs(
+    //               parseFloat(result?.fristEx || 0) +
+    //                 parseFloat(result?.secondEx || 0)
+    //             ) /
+    //               2 +
+    //               parseFloat(result?.CtAtt || 0)
+    //       ).point,
+    //   0
+    // );
 
 
     
 
-    t11allcredit = result.reduce(
-      (i, result) =>
-        result.year === "1" &&
-        result.term === "1" &&
-        result.id === student[0]?.stuId &&
-        i +
-          TGPA(
-            Math.abs(
-              parseFloat(result?.fristEx || 0) -
-                parseFloat(result.secondEx || 0)
-            ) > 14
-              ? Math.abs(
-                  parseFloat(result?.ThirdEx || 0) +
-                    (Math.abs(
-                      parseFloat(result?.fristEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    ) <
-                    Math.abs(
-                      parseFloat(result?.secondEx || 0) -
-                        parseFloat(result?.ThirdEx || 0)
-                    )
-                      ? parseFloat(result?.fristEx || 0)
-                      : parseFloat(result?.secondEx || 0))
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0)
-              : Math.abs(
-                  parseFloat(result?.fristEx || 0) +
-                    parseFloat(result?.secondEx || 0)
-                ) /
-                  2 +
-                  parseFloat(result?.CtAtt || 0),
+t11allcredit = result.reduce((accumulator, currentResult) => {
+      if (
+          currentResult.year === "1" &&
+          currentResult.term === "1" &&
+          currentResult.id === (student[0]?.stuId || '')
+      ) {
+          const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+          const avgMarks = marksDifference > 14 ?
+              Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                      parseFloat(currentResult.fristEx || 0) :
+                      parseFloat(currentResult.secondEx || 0))) / 2 :
+              (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+          const credit = currentResult.credit || 0;
+          const { allCredit } = TGPA(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+          return accumulator + allCredit;
+      } else {
+          return accumulator;
+      }
+  }, 0);
+  
+t11gradepoint = result.reduce((accumulator, currentResult) => {
+      if (
+          currentResult.year === "1" &&
+          currentResult.term === "1" &&
+          currentResult.id === (student[0]?.stuId || '')
+      ) {
+          const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+          const avgMarks = marksDifference > 14 ?
+              Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                      parseFloat(currentResult.fristEx || 0) :
+                      parseFloat(currentResult.secondEx || 0))) / 2 :
+              (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+          const credit = currentResult.credit || 0;
+          const { gradePoint } = TGPA(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+          return accumulator + gradePoint;
+      } else {
+          return accumulator;
+      }
+  }, 0);
 
-           ( result?.credit)
-          ).allCredit,0);
 
 
-          t11gradepoint = result.reduce(
-            (i, result) =>
-              result.year === "1" &&
-              result.term === "1" &&
-              result.id === student[0]?.stuId &&
-              i +
-                TGPA(
-                  Math.abs(
-                    parseFloat(result?.fristEx || 0) -
-                      parseFloat(result.secondEx || 0)
-                  ) > 14
-                    ? Math.abs(
-                        parseFloat(result?.ThirdEx || 0) +
-                          (Math.abs(
-                            parseFloat(result?.fristEx || 0) -
-                              parseFloat(result?.ThirdEx || 0)
-                          ) <
-                          Math.abs(
-                            parseFloat(result?.secondEx || 0) -
-                              parseFloat(result?.ThirdEx || 0)
-                          )
-                            ? parseFloat(result?.fristEx || 0)
-                            : parseFloat(result?.secondEx || 0))
-                      ) /
-                        2 +
-                        parseFloat(result?.CtAtt || 0)
-                    : Math.abs(
-                        parseFloat(result?.fristEx || 0) +
-                          parseFloat(result?.secondEx || 0)
-                      ) /
-                        2 +
-                        parseFloat(result?.CtAtt || 0),
-      
-                 ( result?.credit)
-                ).gradePoint,0);
+  t12allcredit = result.reduce((accumulator, currentResult) => {
+    if (
+        currentResult.year === "1" &&
+        currentResult.term === "2" &&
+        currentResult.id === (student[0]?.stuId || '')
+    ) {
+        const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+        const avgMarks = marksDifference > 14 ?
+            Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                    parseFloat(currentResult.fristEx || 0) :
+                    parseFloat(currentResult.secondEx || 0))) / 2 :
+            (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+        const credit = currentResult.credit || 0;
+        const { allCredit } = TGPA(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+        return accumulator + allCredit;
+    } else {
+        return accumulator;
+    }
+}, 0);
+
+t12gradepoint = result.reduce((accumulator, currentResult) => {
+    if (
+        currentResult.year === "1" &&
+        currentResult.term === "2" &&
+        currentResult.id === (student[0]?.stuId || '')
+    ) {
+        const marksDifference = Math.abs(parseFloat(currentResult.fristEx || 0) - parseFloat(currentResult.secondEx || 0));
+        const avgMarks = marksDifference > 14 ?
+            Math.abs(parseFloat(currentResult.ThirdEx || 0) + (marksDifference < Math.abs(parseFloat(currentResult.secondEx || 0) - parseFloat(currentResult.ThirdEx || 0)) ?
+                    parseFloat(currentResult.fristEx || 0) :
+                    parseFloat(currentResult.secondEx || 0))) / 2 :
+            (parseFloat(currentResult.fristEx || 0) + parseFloat(currentResult.secondEx || 0)) / 2;
+        const credit = currentResult.credit || 0;
+        const { gradePoint } = TGPA(avgMarks + parseFloat(currentResult.CtAtt || 0), credit);
+        return accumulator + gradePoint;
+    } else {
+        return accumulator;
+    }
+}, 0);
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-        }
+
+
+              
+  }
 
 
         const componentRef = React.useRef(null);
@@ -598,7 +610,7 @@ const ResultTable = () => {
             Session:{student[0]?.year}
           </h1>
         </div>
-        {/* result table start */}
+        {/* result 1-1 table start */}
         <div className="overflow-x-auto my-4">
           <h1 className="my-2 font-bold">Year:1,Term:1</h1>
 
@@ -695,7 +707,40 @@ const ResultTable = () => {
                     }
                   </td>
 
-                  <td className="border border-gray-400 px-4 py-2"></td>
+                  <td className="border border-gray-400 px-4 py-2">
+                  {
+                      calculateGradePoint(
+                        Math.abs(
+                          parseFloat(result?.fristEx || 0) -
+                            parseFloat(result.secondEx || 0)
+                        ) > 14
+                          ? Math.abs(
+                              parseFloat(result?.ThirdEx || 0) +
+                                (Math.abs(
+                                  parseFloat(result?.fristEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                ) <
+                                Math.abs(
+                                  parseFloat(result?.secondEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                )
+                                  ? parseFloat(result?.fristEx || 0)
+                                  : parseFloat(result?.secondEx || 0))
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                          : Math.abs(
+                              parseFloat(result?.fristEx || 0) +
+                                parseFloat(result?.secondEx || 0)
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                      ).point===0&&<h2>Repeat</h2>
+                    }
+
+                    
+
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -704,8 +749,122 @@ const ResultTable = () => {
           <h1 className="my-2 font-bold">
             Credit Earned:{uc11} in {c11}
           </h1>
+    
         </div>
-        {/* result table end */}
+        {/* resultc1-1 table end */}
+
+
+
+        {/* result 2-1 table start */}
+        <div className="overflow-x-auto my-4">
+          <h1 className="my-2 font-bold">Year:1,Term:2</h1>
+
+          <table className="w-full table-auto border-collapse">
+            <thead>
+              <tr className="bg-gray-200">
+                <th className="border border-gray-400 px-4 py-2">
+                  Course Code
+                </th>
+                <th className="border border-gray-400 px-4 py-2">
+                  Course Title
+                </th>
+                <th className="border border-gray-400 px-4 py-2">Credit</th>
+                <th className="border border-gray-400 px-4 py-2">GP</th>
+                <th className="border border-gray-400 px-4 py-2">Grade</th>
+                <th className="border border-gray-400 px-4 py-2">Remark</th>
+              </tr>
+            </thead>
+            <tbody>
+              {s12?.map((result, index) => (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
+                >
+                  <td className="border border-gray-400 px-4 py-2">
+                    {result.code}
+                  </td>
+                  <td className="border border-gray-400 px-4 py-2">
+                    {result.subTitle}
+                  </td>
+                  <td className="border border-gray-400 px-4 py-2">
+                    {result.credit}
+                  </td>
+                  <td className="border border-gray-400 px-4 py-2">
+                    {
+                      calculateGradePoint(
+                        Math.abs(
+                          parseFloat(result?.fristEx || 0) -
+                            parseFloat(result.secondEx || 0)
+                        ) > 14
+                          ? Math.abs(
+                              parseFloat(result?.ThirdEx || 0) +
+                                (Math.abs(
+                                  parseFloat(result?.fristEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                ) <
+                                Math.abs(
+                                  parseFloat(result?.secondEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                )
+                                  ? parseFloat(result?.fristEx || 0)
+                                  : parseFloat(result?.secondEx || 0))
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                          : Math.abs(
+                              parseFloat(result?.fristEx || 0) +
+                                parseFloat(result?.secondEx || 0)
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                      ).point
+                    }
+                  </td>
+                  <td className="border border-gray-400 px-4 py-2">
+                    {
+                      calculateGradePoint(
+                        Math.abs(
+                          parseFloat(result?.fristEx || 0) -
+                            parseFloat(result.secondEx || 0)
+                        ) > 14
+                          ? Math.abs(
+                              parseFloat(result?.ThirdEx || 0) +
+                                (Math.abs(
+                                  parseFloat(result?.fristEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                ) <
+                                Math.abs(
+                                  parseFloat(result?.secondEx || 0) -
+                                    parseFloat(result?.ThirdEx || 0)
+                                )
+                                  ? parseFloat(result?.fristEx || 0)
+                                  : parseFloat(result?.secondEx || 0))
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                          : Math.abs(
+                              parseFloat(result?.fristEx || 0) +
+                                parseFloat(result?.secondEx || 0)
+                            ) /
+                              2 +
+                              parseFloat(result?.CtAtt || 0)
+                      ).grade
+                    }
+                  </td>
+
+                  <td className="border border-gray-400 px-4 py-2"></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <h1 className="my-2 font-bold">TGPA:{(t12gradepoint/t12allcredit).toFixed(2)},CGPA:{(((t11gradepoint/t11allcredit)+(t12gradepoint/t12allcredit))/2).toFixed(2)}</h1>
+          <h1 className="my-2 font-bold">
+            Credit Earned:{uc11+uc12} in {c11+c12}
+          </h1>
+        </div>
+        {/* result 2-1 table end */}
+
+
       </div>
     </div>
     </div>

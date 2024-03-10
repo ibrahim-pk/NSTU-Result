@@ -52,6 +52,7 @@ const Body = () => {
   const [ThirdEx, setThirdEx] = useState("");
   const [CtAtt, setCtAtt] = useState("");
   const [finalRes, setFinalRes] = useState("");
+  const [reloader, setReloader] = useState(false);
 
   const [formData, setFormData] = useState({
     // name: "",
@@ -104,24 +105,8 @@ const Body = () => {
       ThirdEx,
       CtAtt);
     setError({});
-    dispatch(uploadMark(
-        {
-          name,
-        id,
-        department,
-        year,
-        term,
-        subTitle,
-        code,
-        credit,
-        fristEx,
-        secondEx,
-        ThirdEx,
-        CtAtt
-        }
-      )
-    );
-
+     dispatch(uploadMark({name,id,department,year,term,subTitle,code,credit,fristEx,secondEx,ThirdEx,CtAtt}));
+  
 
     // setFormData({
     //   ...formData,
@@ -187,6 +172,25 @@ const Body = () => {
     setResult(data?.rslt);
   };
 
+  useEffect(()=>{
+    if(students){
+      const fetchData=async()=>{
+        const { data } = await axios.post(
+          "http://localhost:5000/api/faculty/getstudent",
+          value
+        );
+        console.log("Rslt:", data);
+        seTstudents(data?.result);
+        setAllSubject(data?.subject);
+        setResult(data?.rslt);
+      }
+      fetchData()
+    }
+      
+
+     
+  },[reloader])
+
   const handleCode = (e) => {
     setValue({ ...value, courseCode: e.target.value });
     // setFormData({ ...formData, code: e.target.value });
@@ -234,6 +238,44 @@ const Body = () => {
     setSubTitle(title);
     // setFormData({ ...formData, credit:credit,subTitle:title});
   };
+
+  const handleMarkUploads=(e,name,id)=>{
+    setName(name)
+    setId(id)
+    if(e.target.name==="fristEx"){
+      setFristEx(e.target.value)
+      setSecondEx("")
+      setThirdEx("")
+      setCtAtt("")
+      uploadMarks()
+      setReloader(!reloader)
+    }
+    if(e.target.name==="secondEx"){
+      setSecondEx(e.target.value)
+      setFristEx("")
+      setThirdEx("")
+      setCtAtt("")
+      uploadMarks()
+      setReloader(!reloader)
+    }
+    if(e.target.name==="CtAtt"){
+      setCtAtt(e.target.value)
+      setSecondEx("")
+      setFristEx("")
+      setThirdEx("")
+      uploadMarks()
+      setReloader(!reloader)
+    }
+    if(e.target.name==="ThirdEx"){
+      setThirdEx(e.target.value)
+      setSecondEx("")
+      setFristEx("")
+      setCtAtt("")
+      uploadMarks()
+      setReloader(!reloader)
+    }
+      
+  }
 
   return (
     <div className="flex-[0.8] mt-2">
@@ -396,22 +438,10 @@ const Body = () => {
                               type="number"
                               name="fristEx"
                               // value={result[0]?.fristEx}
-                              onChange={(e) => (
-                                setName(stu.name),
-                                setId(stu.stuId),
-                                setFristEx(e.target.value)
-                              )}
+                              onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
                               className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
                               placeholder="Enter Number"
                             />
-                          </div>
-                          <div>
-                            <button
-                              onClick={uploadMarks}
-                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
-                            >
-                              save
-                            </button>
                           </div>
                           <div>
                             <input
@@ -433,23 +463,12 @@ const Body = () => {
                               type="number"
                               name="secondEx"
                               // value={result[0]?.fristEx}
-                              onChange={(e) => (
-                                setName(stu.name),
-                                setId(stu.stuId),
-                                setSecondEx(e.target.value)
-                              )}
+                              onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
                               className="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
                               placeholder="Enter Number"
                             />
                           </div>
-                          <div>
-                            <button
-                              onClick={uploadMarks}
-                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
-                            >
-                              save
-                            </button>
-                          </div>
+                          
                           <div>
                             <input
                               type="text"
@@ -470,22 +489,10 @@ const Body = () => {
                               type="number"
                               name="CtAtt"
                               // value={result[0]?.fristEx}
-                              onChange={(e) => (
-                                setName(stu.name),
-                                setId(stu.stuId),
-                                setCtAtt(e.target.value)
-                              )}
+                              onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
                               class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
                               placeholder="Enter Number"
                             />
-                          </div>
-                          <div>
-                            <button
-                              onClick={uploadMarks}
-                              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
-                            >
-                              save
-                            </button>
                           </div>
                           <div>
                             <input
@@ -564,29 +571,17 @@ const Body = () => {
                             <div>
                               <input
                                 name="ThirdEx"
-                                onChange={(e) => (
-                                  setName(stu.name),
-                                  setId(stu.stuId),
-                                  setThirdEx(e.target.value)
-                                )}
+                                onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
                                 className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
                                 type="number"
                               />
-                            </div>
-                            <div>
-                              <button
-                                onClick={uploadMarks}
-                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r"
-                              >
-                                save
-                              </button>
                             </div>
                             <div>
                               <input
                                 type="text"
                                 value={
                                   result.find((res) => res.id === stu.stuId)
-                                    ?.ThirdEx || ""
+                                    ?.ThirdEx || " "
                                 }
                                 className="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
                                 disabled

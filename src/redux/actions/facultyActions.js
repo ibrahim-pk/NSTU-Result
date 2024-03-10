@@ -79,7 +79,7 @@ export const uploadMark =(formData) => async (dispatch) => {
       
      const {data}= await api.uploadMarks(formData);
       console.log(data);
-      alert(data?.message)
+      // alert(data?.message)
       dispatch({ type: MARKS_UPLOADED, payload: true });
     } catch (error) {
       dispatch({ type: SET_ERRORS, payload: error.response.data });

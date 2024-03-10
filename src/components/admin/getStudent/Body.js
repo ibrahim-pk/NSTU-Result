@@ -6,7 +6,7 @@ import { MenuItem, Select } from "@mui/material";
 import Spinner from "../../../utils/Spinner";
 import * as classes from "../../../utils/styles";
 import { SET_ERRORS } from "../../../redux/actionTypes";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
 const Body = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState({});
@@ -71,16 +71,12 @@ const Body = () => {
                 }}
               >
                 <div>
-                  <input
-                    type="radio"
-                    name="radio-1"
-                    className="radio"
+                  <p
+                    className="btn btn-sm"
                     onClick={() => setRadioSelect(true)}
-                    checked
-                  />
-                </div>
-                <div>
-                  <label>Single</label>
+                  >
+                    Single
+                  </p>
                 </div>
               </div>
               <div
@@ -91,16 +87,14 @@ const Body = () => {
                 }}
               >
                 <div>
-                  <input
-                    type="radio"
-                    name="radio-1"
+                <p
+                    className="btn btn-sm"
                     onClick={() => setRadioSelect(false)}
-                    className="radio"
-                  />
+                  >
+                    All
+                  </p>
                 </div>
-                <div>
-                  <label>All</label>
-                </div>
+               
               </div>
             </div>
             <div>
@@ -245,14 +239,19 @@ const Body = () => {
                           <td>{stu.email}</td>
                           <td>{stu.year}</td>
                           <td>{stu.batch}</td>
-                          <td><Link to={`/admin/view/result/${stu.stuId}`} className="btn btn-sm">View</Link></td>
+                          <td>
+                            <Link
+                              to={`/admin/view/result/${stu.stuId}`}
+                              className="btn btn-sm"
+                            >
+                              View
+                            </Link>
+                          </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-
-
               )}
           </div>
         </div>

@@ -58,7 +58,7 @@ const Sidebar = () => {
               isActive ? isActiveStyle : isNotActiveStyle
             }>
             <AddIcon className="" />
-            <h1 className="font-normal">Test results</h1>
+            <h1 className="font-normal">Get results</h1>
           </NavLink>
           {/* <NavLink
             to="/student/attendance"
@@ -69,7 +69,7 @@ const Sidebar = () => {
             <h1 className="font-normal">Attendance</h1>
           </NavLink> */}
         </div>
-        <div className="">
+        {/* <div className="">
           <NavLink
             to="/student/subjectlist"
             className={({ isActive }) =>
@@ -78,7 +78,7 @@ const Sidebar = () => {
             <EngineeringIcon className="" />
             <h1 className="font-normal">Subject List</h1>
           </NavLink>
-        </div>
+        </div> */}
       </div>
     </div>
   );
