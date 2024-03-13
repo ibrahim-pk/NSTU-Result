@@ -52,6 +52,7 @@ import DeleteUfaculty from "./components/admin/deleteUfaculty/DeleteUfaculty";
 import Curricumn from "./components/admin/visitCurri/Curriculumn";
 import CurricumnFact from "./components/faculty/visitCurri/Curriculumn";
 import ResultRoot from "./components/admin/Result/ResultRoot";
+import ResetPassword from "./components/login/ResentPassword";
 
 const App = () => {
   return (
@@ -62,6 +63,7 @@ const App = () => {
       {/* Admin  */}
 
       <Route path="/login/adminlogin" element={<AdminLogin />} />
+  
       <Route path="/register/admin-register" element={<AdminRegister />} />
       <Route path="/admin/home" element={<AdminHome />} />
       <Route path="/admin/profile" element={<AdminProfile />} />
@@ -111,6 +113,7 @@ const App = () => {
       {/* Student  */}
 
       <Route path="/login/studentlogin" element={<StudentLogin />} />
+      <Route path="/reset/password" element={<ResetPassword />} />
       <Route path="/register/student-register" element={<StudentRegister />} />
       <Route path="/student/home" element={<StudentHome />} />
       <Route path="/student/password" element={<StudentFirstTimePassword />} />

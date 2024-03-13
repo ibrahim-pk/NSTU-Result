@@ -417,9 +417,9 @@ const Body = () => {
                     <th>Sr no</th>
                     <th>Name</th>
                     <th>StuID</th>
+                    <th>CT+ATT</th>
                     <th>1st Examiner</th>
                     <th>2nd Examiner</th>
-                    <th>CT+ATT</th>
                     <th>Difference</th>
                     <th>3rd Exaniner</th>
                     <th>Final Mark</th>
@@ -431,6 +431,31 @@ const Body = () => {
                       <td>{idx + 1}</td>
                       <td>{stu.name}</td>
                       <td>{stu.stuId}</td>
+                      <td>
+                        <div class="flex">
+                          <div>
+                            <input
+                              type="number"
+                              name="CtAtt"
+                              // value={result[0]?.fristEx}
+                              onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
+                              class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              placeholder="Enter Number"
+                            />
+                          </div>
+                          <div>
+                            <input
+                              type="text"
+                              value={
+                                result.find((res) => res.id === stu.stuId)
+                                  ?.CtAtt || ""
+                              }
+                              class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </td>
                       <td>
                         <div class="flex">
                           <div>
@@ -482,31 +507,7 @@ const Body = () => {
                           </div>
                         </div>
                       </td>
-                      <td>
-                        <div class="flex">
-                          <div>
-                            <input
-                              type="number"
-                              name="CtAtt"
-                              // value={result[0]?.fristEx}
-                              onBlur={(e) =>handleMarkUploads(e,stu.name,stu.stuId)}
-                              class="border border-gray-300 rounded-l-md px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                              placeholder="Enter Number"
-                            />
-                          </div>
-                          <div>
-                            <input
-                              type="text"
-                              value={
-                                result.find((res) => res.id === stu.stuId)
-                                  ?.CtAtt || ""
-                              }
-                              class="border border-gray-300  px-3 py-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500 w-24"
-                              disabled
-                            />
-                          </div>
-                        </div>
-                      </td>
+                      
 
                       <td>
                         {Math.abs(

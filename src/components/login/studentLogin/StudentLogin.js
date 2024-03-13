@@ -9,7 +9,7 @@ import { studentSignIn } from "../../../redux/actions/studentActions";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm, Controller } from "react-hook-form";
-
+import { Link } from "react-router-dom";
 const schema = yup
   .object({
     username: yup.string().required(),
@@ -144,6 +144,7 @@ const StudentLogin = () => {
           >
             Login
           </button>
+          <Link style={{color:"white"}} to="/reset/password">Reset Password</Link>
           {loading && (
             <Spinner
               message="Logging In"
